@@ -1,5 +1,5 @@
 const express = require("express");
-const passport = require('passport');
+const passport = require("passport");
 const router = express.Router();
 const User = require("../models/User");
 
@@ -7,33 +7,28 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
-
-router.get("/login", (req, res, next) => {
-  res.render("auth/login", { "message": req.flash("error") });
-});
-
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/auth/login",
-  failureFlash: true,
-  passReqToCallback: true
-}));
-
-router.get("/signup", (req, res, next) => {
-  res.render("auth/signup");
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (_, user, error) => {
+    if (!user) {
+      res.status(403).json(error);
+      next();
+    }
+    res.status(200).json(user);
+    next();
+  })(req, res, next);
 });
 
 router.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
   if (username === "" || password === "") {
-    res.render("auth/signup", { message: "Indicate username and password" });
+    res.json({ message: "Indicate username and password" });
     return;
   }
 
   User.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
-      res.render("auth/signup", { message: "The username already exists" });
+      res.json({ message: "The username already exists" });
       return;
     }
 
@@ -42,22 +37,23 @@ router.post("/signup", (req, res, next) => {
 
     const newUser = new User({
       username,
-      password: hashPass
+      password: hashPass,
     });
 
-    newUser.save()
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch(err => {
-      res.render("auth/signup", { message: "Something went wrong" });
-    })
+    newUser
+      .save()
+      .then(() => {
+        res.json(newUser);
+      })
+      .catch((err) => {
+        res.json({ message: "Something went wrong" });
+      });
   });
 });
 
 router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect("/");
+  res.json({ message: "logged out" });
 });
 
 module.exports = router;
