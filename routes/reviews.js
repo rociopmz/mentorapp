@@ -14,8 +14,8 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/create_reviews", (req, res, next) => {
-  const { _id: owner } = req.user;
-  Reviews.create({ ...req.body, owner })
+  const { _id: mentee_owner } = req.user;
+  Reviews.create({ ...req.body, mentee_owner })
     .then((reviews) => {
       res.status(201).json({ result: reviews });
     })

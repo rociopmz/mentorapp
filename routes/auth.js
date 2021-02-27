@@ -8,27 +8,28 @@ const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (_, user, error) => {
-    if (!user) {
-      res.status(403).json(error);
-      next();
-    }
-    res.status(200).json(user);
-    next();
+  passport.authenticate("local", (error, user, errDetails) => {
+    if (error) return res.status(500).json({ message: errDetails });
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+    req.login(user, (error) => {
+      if (error) return res.status(500).json({ message: errDetails });
+      //const usr = clearRes(user.toObject());
+      res.status(200).json(user);
+    });
   })(req, res, next);
 });
 
 router.post("/signup", (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  if (username === "" || password === "") {
-    res.json({ message: "Indicate username and password" });
+  const { email, password, ...restInfo } = req.body;
+  if (email === "" || password === "") {
+    res.json({ message: "Indicate email and password" });
     return;
   }
 
-  User.findOne({ username }, "username", (err, user) => {
+  User.findOne({ email }, "email", (err, user) => {
     if (user !== null) {
-      res.json({ message: "The username already exists" });
+      res.json({ message: "The email already exists" });
       return;
     }
 
@@ -36,8 +37,9 @@ router.post("/signup", (req, res, next) => {
     const hashPass = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
-      username,
+      email,
       password: hashPass,
+      ...restInfo,
     });
 
     newUser
@@ -46,7 +48,7 @@ router.post("/signup", (req, res, next) => {
         res.json(newUser);
       })
       .catch((err) => {
-        res.json({ message: "Something went wrong" });
+        res.json({ message: "Something went wrong", err });
       });
   });
 });

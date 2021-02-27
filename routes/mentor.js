@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Mentor = require("../models/Mentor");
+const User = require("../models/User");
 
 router.get("/", (req, res, next) => {
   const { _id: user } = req.user;
@@ -15,6 +16,10 @@ router.get("/", (req, res, next) => {
 
 router.post("/create_mentor", (req, res, next) => {
   const { _id: user } = req.user;
+  console.log("este es el user", req.user);
+  User.findByIdAndUpdate(user, { role: "mentor" }, { new: true })
+    .then((mentor) => {})
+    .catch((error) => {});
   Mentor.create({ ...req.body, user })
     .then((mentor) => {
       res.status(201).json({ result: mentor });
