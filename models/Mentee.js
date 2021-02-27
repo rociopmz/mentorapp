@@ -2,6 +2,11 @@ const { Schema, model } = require("mongoose");
 
 const menteeSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     objective: {
       type: String,
       enum: [
@@ -18,4 +23,4 @@ const menteeSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model("Mentee", mentorSchema);
+module.exports = model("Mentee", menteeSchema);

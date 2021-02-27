@@ -1,5 +1,20 @@
 const { Schema, model } = require("mongoose");
 
-const ratingSchema = new Schema({}, { timestamps: true });
+const reviewsSchema = new Schema(
+  {
+    mentee_owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    review: String,
+    mentor_reviewed: {
+      type: Schema.Types.ObjectId,
+      ref: "Mentor",
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = model("Reviews", ratingSchema);
+module.exports = model("Reviews", reviewsSchema);

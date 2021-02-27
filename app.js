@@ -56,9 +56,15 @@ app.use(flash());
 require("./passport")(app);
 
 const index = require("./routes/index");
-app.use("/", index);
-
 const authRoutes = require("./routes/auth");
+const mentor_routes = require("./routes/mentor");
+const mentee_routes = require("./routes/mentee");
+const reviews_routes = require("./routes/reviews");
+
+app.use("/api", index);
 app.use("/auth", authRoutes);
+app.use("/api/mentor", mentor_routes);
+app.use("/api/mentee", mentee_routes);
+app.use("/api/reviews", reviews_routes);
 
 module.exports = app;

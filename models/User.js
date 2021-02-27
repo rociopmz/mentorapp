@@ -16,7 +16,7 @@ const userSchema = new Schema(
     },
     profile_picture: {
       type: String,
-      default: " ", //Profile pic en cloudinary
+      default: "https://res.cloudinary.com/rociopmz/image/upload/v1614306120/mex-pt/profile-icon.png",
     },
     role: {
       type: String,

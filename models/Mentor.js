@@ -2,8 +2,13 @@ const { Schema, model } = require("mongoose");
 
 const mentorSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     profesion: {
-      // Aquí el mentos pone su profesión e industria
+      // Aquí el mentor pone su profesión e industria
       type: String,
       enum: [
         "Diseño de CV",
@@ -13,11 +18,9 @@ const mentorSchema = new Schema(
       ],
       required: [true, "Selecciona una o más opciones"],
     },
-    avalability: String, //agenda
-    bookings: String, // sesiones programadas
-    messages: String, // comunicación con el mentee
-    reviews: String, // Stars más texto
-    blog: String, // Esto debe ser media: texto, imagen. video, links.
+    agenda: String, //Calendly
+    booked_sessions: String, // historico de sesiones
+    reviews: String, // Stars
   },
   { timestamps: true }
 );
