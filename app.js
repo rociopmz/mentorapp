@@ -10,6 +10,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
+const cors = require("cors");
 
 mongoose
   .connect("mongodb://localhost/mentorsite-back", {
@@ -49,6 +50,13 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
   })
 );
 
