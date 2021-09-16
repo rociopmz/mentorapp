@@ -10,7 +10,7 @@ const reviewsSchema = new Schema(
     review: String,
     mentor_reviewed: {
       type: Schema.Types.ObjectId,
-      ref: "Mentor",
+      ref: "User",
       required: true,
     },
   },

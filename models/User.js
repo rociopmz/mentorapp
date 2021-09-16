@@ -21,7 +21,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ["admin", "user", "mentor", "mentee"],
-      default: "user",
+      default: "mentee",
     },
     aboutme: String,
     location: String,
@@ -29,6 +29,16 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    objective: {
+      type: [String],
+      enum: [
+        "Revisión de CV",
+        "Revisión de Portafolio",
+        "Entrevista de Trabajo",
+        "Otro",
+      ],
+    },
+
   },
   {
     timestamps: true,
