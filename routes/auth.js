@@ -74,4 +74,17 @@ router.get("/google/callback", (req, res, next) => {
   })(req, res, next);
 });
 
+router.patch("/update", (req, res) =>{
+  const {_id} = req.body 
+ User.findByIdAndUpdate(_id,{...req.body},{new: true})
+ .then((user) => {
+  res.status(200).json({ result:user})
+ })
+ .catch((err) => {
+  res.json({ message: "Something went wrong", err });
+});
+} )
+
+
+
 module.exports = router;

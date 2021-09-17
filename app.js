@@ -45,7 +45,7 @@ app.use(
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3001"],
     credentials: true,
   })
 );
@@ -60,7 +60,7 @@ const mentee_routes = require("./routes/mentee");
 const reviews_routes = require("./routes/reviews");
 
 app.use("/api", index);
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/mentor", mentor_routes);
 app.use("/api/mentee", mentee_routes);
 app.use("/api/reviews", reviews_routes);
