@@ -11,7 +11,7 @@ const flash = require("connect-flash");
 const cors = require("cors");
 
 mongoose
-  .connect("mongodb://localhost/mentorsite-back", {
+  .connect(process.env.DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
