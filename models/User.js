@@ -38,7 +38,7 @@ const userSchema = new Schema(
         "Otro",
       ],
     },
-
+    reviews: [String]
   },
   {
     timestamps: true,
